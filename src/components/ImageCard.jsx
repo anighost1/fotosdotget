@@ -32,7 +32,6 @@ const ImageCard = ({ data }) => {
                 // image="https://source.unsplash.com/random?wallpapers"
                 image={data.urls.small_s3}
             />
-            {/* <CardContent sx={{ flexGrow: 1 }}> */}
             <Typography
                 gutterBottom
                 variant="body"
@@ -45,8 +44,6 @@ const ImageCard = ({ data }) => {
             >
                 {data.description || data.alt_description}
             </Typography>
-            {/* </CardContent> */}
-            {/* <CardActions> */}
             <Stack
                 direction={'row'}
                 justifyContent={'space-between'}
@@ -70,7 +67,6 @@ const ImageCard = ({ data }) => {
                     <Typography>{data.likes}</Typography>
                 </Stack>
             </Stack>
-            {/* </CardActions> */}
         </Card>
     )
 }
