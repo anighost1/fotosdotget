@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Dialog,
     Button,
@@ -15,8 +15,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { styled } from '@mui/system';
+import ImageDownloader from './ImageDownloader';
+import Service from '../services/http';
+// import crypto from 'crypto';
 
 const FullImage = ({ open, handleClose, data }) => {
+
 
     const CustomButton = styled(Button)({
         color: '#222831',
@@ -26,6 +30,25 @@ const FullImage = ({ open, handleClose, data }) => {
             color: 'white',
         },
     });
+
+    const generateRandomString = () => {
+        const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        const stringLength = 5;
+        let randomString = '';
+
+        for (let i = 0; i < stringLength; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomString += characters[randomIndex];
+        }
+        return randomString
+    };
+
+    const handleDownload = async () => {
+        const imageBlob = await Service.getBlob(data.urls?.raw)
+        const url = window.URL.createObjectURL(new Blob([imageBlob]));
+        ImageDownloader(url, `${generateRandomString()}.jpg`)
+        // console.log(generateRandomString())
+    }
 
 
     return (
@@ -43,7 +66,7 @@ const FullImage = ({ open, handleClose, data }) => {
                     zIndex: 10,
                     // backgroundColor:'#22283155',
                     background: 'radial-gradient(circle, rgba(34,40,49,0.55) 0%, rgba(34,40,49,0) 70%)',
-                    color:'#eeeeee'
+                    color: '#eeeeee'
                 }}
                 onClick={handleClose}
             >
@@ -51,8 +74,8 @@ const FullImage = ({ open, handleClose, data }) => {
             </IconButton>
             <Stack
                 direction={{
-                    xs:'column',
-                    sm:'row'
+                    xs: 'column',
+                    sm: 'row'
                 }}
                 justifyContent={'space-between'}
             >
@@ -61,8 +84,8 @@ const FullImage = ({ open, handleClose, data }) => {
                     src={data.urls?.regular}
                     sx={{
                         width: {
-                            xs:'100%',
-                            sm:'60%'
+                            xs: '100%',
+                            sm: '60%'
                         },
                         height: '100%'
                     }}
@@ -81,8 +104,8 @@ const FullImage = ({ open, handleClose, data }) => {
                     </Typography>
                     <Stack
                         direction={{
-                            md:'row',
-                            xs:'column'
+                            md: 'row',
+                            xs: 'column'
                         }}
                         justifyContent={'space-between'}
                         spacing={2}
@@ -101,6 +124,7 @@ const FullImage = ({ open, handleClose, data }) => {
                         <CustomButton
                             variant='outlined'
                             fullWidth
+                            onClick={handleDownload}
                         >
                             <DownloadIcon />
                         </CustomButton>
