@@ -19,27 +19,42 @@ import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
-const ImageCard = ({ data }) => {
+const ImageCard = ({ data, handleClickOpen, selectImage }) => {
     return (
         <Card
-            sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+            sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: '150ms',
+                ":hover": {
+                    transform: "scale(1.008)"
+                },
+            }}
         >
             <CardMedia
                 component="div"
                 sx={{
                     pt: '56.25%',
+                    cursor: 'pointer',
+                    transition: '100ms',
+                    ":hover": {
+                        transform: "scale(1.008)"
+                    },
                 }}
                 // image="https://source.unsplash.com/random?wallpapers"
                 image={data.urls.small_s3}
+                onClick={() => { handleClickOpen(); selectImage(data) }}
             />
             <Typography
                 gutterBottom
-                variant="body"
+                variant="body2"
+                color={'text'}
                 sx={{
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    padding: '0.3rem'
+                    padding: '0.5rem'
                 }}
             >
                 {data.description || data.alt_description}

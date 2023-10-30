@@ -52,6 +52,7 @@ const NavBar = () => {
                     variant='outlined'
                     size='small'
                     placeholder='Search...'
+                    autoComplete="off"
                     sx={{
                         display: {
                             xs: 'none',
