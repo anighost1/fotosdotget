@@ -47,7 +47,11 @@ const FullImage = ({ open, handleClose, data }) => {
         const imageBlob = await Service.getBlob(data.urls?.raw)
         const url = window.URL.createObjectURL(new Blob([imageBlob]));
         ImageDownloader(url, `${generateRandomString()}.jpg`)
-        // console.log(generateRandomString())
+    }
+
+    const handleShare = async () => {
+        const shareLink = `https://api.whatsapp.com/send?text=${encodeURIComponent( `Check out this awesome photo: ${data.urls?.raw}`)}`;
+        window.open(shareLink,'_blank')
     }
 
 
@@ -118,6 +122,7 @@ const FullImage = ({ open, handleClose, data }) => {
                         <CustomButton
                             variant='outlined'
                             fullWidth
+                            onClick={handleShare}
                         >
                             <ShareIcon />
                         </CustomButton>

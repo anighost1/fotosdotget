@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import {
     Grid,
     Typography,
-    Container
+    Container,
+    Button
 } from '@mui/material';
 import ImageCard from '../components/ImageCard';
 import ImageSkeleton from '../components/ImageSkeleton';
 import Service from '../services/http';
 import FullImage from '../components/FullImage';
+import { addToken } from '../redux/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function Home() {
@@ -15,6 +18,36 @@ export default function Home() {
     const [images, setImages] = useState([])
     const [selectedData, setSelectedData] = useState({})
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch()
+    const accessToken = useSelector((state) => state.user?.access_token)
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const code = queryParams.get('code')
+
+    const authentication = async () => {
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+        const authResponse = await Service.getAuthToken(code)
+        localStorage.setItem('access_token', authResponse.access_token)
+        dispatch(addToken(authResponse.access_token))
+        console.log(authResponse)
+    }
+
+    // const accessTokenCheck = () => {
+    //     if (localStorage.getItem('access_token')) {
+    //         dispatch(addToken(localStorage.getItem('access_token')))
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     accessTokenCheck()
+    // }, [code])
+
+    useEffect(() => {
+        if (code) {
+            authentication()
+        }
+    }, [])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -36,7 +69,7 @@ export default function Home() {
         fetchImages()
     }, [])
 
-    const selectImage = (data)=>{
+    const selectImage = (data) => {
         setSelectedData(data)
     }
 

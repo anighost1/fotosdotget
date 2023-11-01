@@ -1,29 +1,56 @@
 
 import axios from "axios"
 
+export const AccessKey = '3C_WwY6dy_qrngQ50lQvEWEq3ZZtsqhEO7r51c0bxdc'
+export const SecretKey = 'l1yyWi-TlHjrkH4VO-6KxNYk-_Xs-94lb5MHcYzsm_A'
+export const BaseUrl = 'https://api.unsplash.com';
+const PhotoUrl = `${BaseUrl}/photos/`;
 
-const getPhotos = () => {
-    const baseUrl = 'https://api.unsplash.com/photos/';
-    const accessKey = '3C_WwY6dy_qrngQ50lQvEWEq3ZZtsqhEO7r51c0bxdc'
-    return axios.get(`${baseUrl}?client_id=${accessKey}`)
+const Authentication = () => {
+    const redirect_uri = encodeURIComponent('http://localhost:3000/')
+    const scope = 'public';
+    const url = `https://unsplash.com/oauth/authorize?client_id=${AccessKey}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}`
+    const link = document.createElement('a');
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+const getAuthToken = async (code) => {
+    const tokenUrl = 'https://unsplash.com/oauth/token';
+    const dataToSend = {
+        client_id: AccessKey,
+        client_secret: SecretKey,
+        redirect_uri: 'http://localhost:3000/',
+        code: code,
+        grant_type: 'authorization_code'
+    }
+    return axios.post(tokenUrl, dataToSend)
         .then((res) => {
-            // console.log(res.data)
+            return res.data;
+        })
+        .catch((err) => {
+            throw err;
+        })
+}
+
+const getPhotos = async () => {
+    return axios.get(`${PhotoUrl}?client_id=${AccessKey}`)
+        .then((res) => {
             return res.data
         })
         .catch((err) => {
-            // console.log(err)
             throw err
         })
 }
 
-const getBlob = (url) => {
-    return axios.get(url,{responseType: 'arraybuffer'})
+const getBlob = async (url) => {
+    return axios.get(url, { responseType: 'arraybuffer' })
         .then((res) => {
-            // console.log(res.data)
             return res.data
         })
         .catch((err) => {
-            // console.log(err)
             throw err
         })
 }
@@ -31,8 +58,10 @@ const getBlob = (url) => {
 
 
 const Service = {
+    Authentication,
+    getAuthToken,
     getPhotos,
-    getBlob
+    getBlob,
 }
 
 export default Service

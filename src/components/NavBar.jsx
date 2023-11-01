@@ -6,12 +6,19 @@ import {
     Stack,
     TextField,
     Toolbar,
+    Tooltip,
     Typography
 } from '@mui/material';
 import Face5Icon from '@mui/icons-material/Face5';
 import SearchIcon from '@mui/icons-material/Search';
+import LoginIcon from '@mui/icons-material/Login';
+import Service from '../services/http';
+import { useSelector } from 'react-redux';
 
 const NavBar = () => {
+
+    const accessToken = useSelector((state) => state.user?.access_token)
+
     return (
         <Stack
             direction={'row'}
@@ -21,7 +28,7 @@ const NavBar = () => {
                 minHeight: 70,
                 // borderBottom: "1px solid #aaaaaa88",
                 px: 2,
-                backgroundColor:'#222831'
+                backgroundColor: '#222831'
             }}
         >
             <Typography
@@ -30,7 +37,7 @@ const NavBar = () => {
                     fontWeight: 600,
                     fontSize: '1.5rem',
                     fontFamily: 'sans-serif',
-                    color:'#eeeeee'
+                    color: '#eeeeee'
                 }}
             >
                 Fotos Dot Get
@@ -46,7 +53,7 @@ const NavBar = () => {
                         sm: '50%',
                     },
                 }}
-                // border={1}
+            // border={1}
             >
                 <TextField
                     variant='outlined'
@@ -58,12 +65,12 @@ const NavBar = () => {
                             xs: 'none',
                             sm: 'flex'
                         },
-                        
+
                     }}
                     InputProps={{
-                        style:{
-                            color:'#eeeeee',
-                            border:'0.01rem solid #eeeeee88'
+                        style: {
+                            color: '#eeeeee',
+                            border: '0.01rem solid #eeeeee88'
                         },
                         endAdornment: (
                             <InputAdornment position="end">
@@ -82,11 +89,25 @@ const NavBar = () => {
                         }
                     }}
                 >
-                    <SearchIcon fontSize='large' sx={{color:'#eeeeee'}} />
+                    <SearchIcon fontSize='large' sx={{ color: '#eeeeee' }} />
                 </IconButton>
-                <IconButton>
-                    <Face5Icon fontSize='large' sx={{color:'#eeeeee'}} />
-                </IconButton>
+                {!accessToken && (
+                    <Tooltip
+                        title={'Login'}
+                        arrow
+                    >
+                        <IconButton
+                            onClick={Service.Authentication}
+                        >
+                            <LoginIcon fontSize='large' sx={{ color: '#eeeeee' }} />
+                        </IconButton>
+                    </Tooltip>
+                )}
+                {accessToken && (
+                    <IconButton>
+                        <Face5Icon fontSize='large' sx={{ color: '#eeeeee' }} />
+                    </IconButton>
+                )}
             </Stack>
         </Stack>
     )
