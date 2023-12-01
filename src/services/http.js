@@ -29,7 +29,6 @@ const getAuthToken = async (code) => {
     }
     return axios.post(tokenUrl, dataToSend)
         .then((res) => {
-            console.log(res.data)
             return res.data;
         })
         .catch((err) => {
@@ -52,7 +51,7 @@ const searchPhotos = async (keyword, accessToken) => {
     const header = {
         Authorization: `Bearer ${accessToken}`
     }
-    return axios.get(url, {
+    return axios.get(url,{
         headers: header
     })
         .then((res) => {

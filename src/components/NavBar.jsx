@@ -9,7 +9,8 @@ import {
     Typography,
     Menu,
     MenuItem,
-    Fade
+    Fade,
+    Box
 } from '@mui/material';
 import Face5Icon from '@mui/icons-material/Face5';
 import SearchIcon from '@mui/icons-material/Search';
@@ -43,7 +44,11 @@ const NavBar = () => {
     }
 
     const onSearch = () => {
-        dispatch(searchTrigger())
+        if (user.access_token) {
+            dispatch(searchTrigger())
+        }else{
+            setSearchOpen(true)
+        }
     }
 
     const handleSearchOpen = () => {
@@ -62,17 +67,32 @@ const NavBar = () => {
                     backgroundColor: '#222831'
                 }}
             >
-                <Typography
-                    variant='body'
-                    sx={{
-                        fontWeight: 600,
-                        fontSize: '1.5rem',
-                        fontFamily: 'sans-serif',
-                        color: '#eeeeee'
-                    }}
+                <Stack
+                    direction={'row'}
+                    spacing={1}
+                    alignItems={'center'}
                 >
-                    Fotos Dot Get
-                </Typography>
+                    <Box
+                        component={'img'}
+                        src='/logo192.png'
+                        width={'3em'}
+                    />
+                    <Typography
+                        variant='body'
+                        sx={{
+                            fontWeight: 600,
+                            fontSize: '1.5rem',
+                            fontFamily: 'sans-serif',
+                            color: '#eeeeee',
+                            display: {
+                                xs: 'none',
+                                sm: 'block'
+                            }
+                        }}
+                    >
+                        Fotos Dot Get
+                    </Typography>
+                </Stack>
                 <Stack
                     direction={'row'}
                     justifyContent={'space-between'}
@@ -189,10 +209,10 @@ const NavBar = () => {
                 }}
             />)}
             {searchOpen && !user.access_token && (
-                <Typography 
-                variant='body2'
-                margin={1}
-                textAlign={'center'}
+                <Typography
+                    variant='body2'
+                    margin={1}
+                    textAlign={'center'}
                 >
                     You need to be signed in to use this feature.
                 </Typography>
