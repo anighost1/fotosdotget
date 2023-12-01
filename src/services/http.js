@@ -6,6 +6,7 @@ export const SecretKey = 'l1yyWi-TlHjrkH4VO-6KxNYk-_Xs-94lb5MHcYzsm_A'
 export const BaseUrl = 'https://api.unsplash.com';
 const PhotoUrl = `${BaseUrl}/photos/`;
 
+
 const Authentication = () => {
     const redirect_uri = encodeURIComponent('http://localhost:3000/')
     const scope = 'public';
@@ -45,6 +46,22 @@ const getPhotos = async () => {
         })
 }
 
+const searchPhotos = async (keyword, accessToken) => {
+    const url = `${BaseUrl}/search/photos?query=${keyword}`;
+    const header = {
+        Authorization: `Bearer ${accessToken}`
+    }
+    return axios.get(url, {
+        headers: header
+    })
+        .then((res) => {
+            return res.data
+        })
+        .catch((err) => {
+            throw err
+        })
+}
+
 const getBlob = async (url) => {
     return axios.get(url, { responseType: 'arraybuffer' })
         .then((res) => {
@@ -55,13 +72,33 @@ const getBlob = async (url) => {
         })
 }
 
+const getUserProfile = async (accessToken) => {
+    const url = `${BaseUrl}/me`;
+    const header = {
+        Authorization: `Bearer ${accessToken}`
+    }
+    return axios.get(url, {
+        headers: header
+    })
+        .then((res) => {
+            return res.data
+        })
+        .catch((err) => {
+            throw err
+        })
+}
+
+
+
 
 
 const Service = {
     Authentication,
     getAuthToken,
     getPhotos,
+    searchPhotos,
     getBlob,
+    getUserProfile,
 }
 
 export default Service

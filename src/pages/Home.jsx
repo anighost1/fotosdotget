@@ -3,14 +3,16 @@ import {
     Grid,
     Typography,
     Container,
+    LinearProgress ,
     Button
 } from '@mui/material';
 import ImageCard from '../components/ImageCard';
 import ImageSkeleton from '../components/ImageSkeleton';
 import Service from '../services/http';
 import FullImage from '../components/FullImage';
-import { addToken } from '../redux/slices/userSlice';
+import { addToken, addUser } from '../redux/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import Loader from '../components/Loader';
 
 
 export default function Home() {
@@ -18,8 +20,10 @@ export default function Home() {
     const [images, setImages] = useState([])
     const [selectedData, setSelectedData] = useState({})
     const [open, setOpen] = useState(false);
+    const [loader, setLoader] = useState(false);
     const dispatch = useDispatch()
     const accessToken = useSelector((state) => state.user?.access_token)
+    const searchKeyword = useSelector((state) => state.search.keyword)
 
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get('code')
@@ -30,22 +34,23 @@ export default function Home() {
         const authResponse = await Service.getAuthToken(code)
         localStorage.setItem('access_token', authResponse.access_token)
         dispatch(addToken(authResponse.access_token))
-        console.log(authResponse)
     }
 
-    // const accessTokenCheck = () => {
-    //     if (localStorage.getItem('access_token')) {
-    //         dispatch(addToken(localStorage.getItem('access_token')))
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     accessTokenCheck()
-    // }, [code])
+    const fetchProfile = async (token) => {
+        const profile = await Service.getUserProfile(token)
+        dispatch(addUser(profile))
+    }
 
     useEffect(() => {
         if (code) {
             authentication()
+        }
+    }, [])
+
+    useEffect(() => {
+        if (localStorage.getItem('access_token')) {
+            dispatch(addToken(localStorage.getItem('access_token')))
+            fetchProfile(localStorage.getItem('access_token'))
         }
     }, [])
 
@@ -57,13 +62,31 @@ export default function Home() {
         setOpen(false);
     };
 
+    const searchImages = async () => {
+        setLoader(true)
+        const data = await Service.searchPhotos(searchKeyword, accessToken);
+        if (data) {
+            setImages(data.results)
+        }
+        setLoader(false)
+    }
+
     const fetchImages = async () => {
+        setLoader(true)
         const data = await Service.getPhotos();
         if (data) {
             setImages(data)
         }
-        // console.log(data)
+        setLoader(false)
     }
+    
+    useEffect(() => {
+        if (searchKeyword) {
+            searchImages()
+        }else{
+            fetchImages()
+        }
+    }, [searchKeyword])
 
     useEffect(() => {
         fetchImages()
@@ -74,6 +97,8 @@ export default function Home() {
     }
 
     return (
+        <>
+        {loader && (<Loader/>)}
         <Container sx={{ py: 8 }} maxWidth="md">
             <FullImage open={open} handleClose={handleClose} data={selectedData} />
             <Grid container spacing={4}>
@@ -87,5 +112,6 @@ export default function Home() {
                 ))}
             </Grid>
         </Container >
+        </>            
     );
 }

@@ -11,6 +11,7 @@ export const userSlice = createSlice({
   reducers: {
     addToken: (state, action) => {
         state.access_token = action.payload
+        // console.log('token added')
     },
     removeToken: (state) => {
         state.access_token = ''

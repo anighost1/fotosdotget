@@ -25,15 +25,15 @@ const Footer = () => {
             <Typography variant="h6" align="center" gutterBottom>
                 Fotos Dot Get
             </Typography>
-            {/* <Typography
+            <Typography
                 variant="subtitle1"
                 align="center"
                 color="text.secondary"
                 component="p"
             >
-                Something here to give the footer a purpose!
-            </Typography> */}
-            <Copyright />
+                An idea doesn't have to die
+            </Typography>
+            {/* <Copyright /> */}
         </Box>
     )
 }

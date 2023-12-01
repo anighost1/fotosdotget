@@ -18,6 +18,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 
 const ImageCard = ({ data, handleClickOpen, selectImage }) => {
     return (
@@ -77,7 +78,7 @@ const ImageCard = ({ data, handleClickOpen, selectImage }) => {
                 </Box>
                 <Stack direction={'row'} spacing={1} px={1} alignItems={'center'}>
                     <IconButton>
-                        <ThumbUpIcon fontSize='small' />
+                        <ThumbUpOutlinedIcon fontSize='small' />
                     </IconButton>
                     <Typography>{data.likes}</Typography>
                 </Stack>

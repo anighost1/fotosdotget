@@ -1,23 +1,48 @@
 import React from 'react'
 import {
-    AppBar,
+    Button,
     IconButton,
     InputAdornment,
     Stack,
     TextField,
     Toolbar,
     Tooltip,
-    Typography
+    Typography,
+    Menu,
+    MenuItem,
+    Fade
 } from '@mui/material';
 import Face5Icon from '@mui/icons-material/Face5';
 import SearchIcon from '@mui/icons-material/Search';
 import LoginIcon from '@mui/icons-material/Login';
 import Service from '../services/http';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { assignKeyword } from '../redux/slices/search';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
 
-    const accessToken = useSelector((state) => state.user?.access_token)
+    const user = useSelector((state) => state.user)
+    const searchKeyword = useSelector((state) => state.search.keyword)
+    const dispatch = useDispatch()
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const onchangeSearch = (e) => {
+        const { value } = e.target
+        dispatch(assignKeyword(value))
+    }
+
+    const onSearch = ()=>{
+        alert('Searched')
+    }
 
     return (
         <Stack
@@ -26,7 +51,6 @@ const NavBar = () => {
             alignItems={'center'}
             sx={{
                 minHeight: 70,
-                // borderBottom: "1px solid #aaaaaa88",
                 px: 2,
                 backgroundColor: '#222831'
             }}
@@ -53,7 +77,6 @@ const NavBar = () => {
                         sm: '50%',
                     },
                 }}
-            // border={1}
             >
                 <TextField
                     variant='outlined'
@@ -67,6 +90,8 @@ const NavBar = () => {
                         },
 
                     }}
+                    value={searchKeyword}
+                    onChange={onchangeSearch}
                     InputProps={{
                         style: {
                             color: '#eeeeee',
@@ -74,7 +99,7 @@ const NavBar = () => {
                         },
                         endAdornment: (
                             <InputAdornment position="end">
-                                <IconButton>
+                                <IconButton autoFocus onClick={onSearch}>
                                     <SearchIcon sx={{ color: '#eeeeee' }} />
                                 </IconButton>
                             </InputAdornment>
@@ -91,7 +116,7 @@ const NavBar = () => {
                 >
                     <SearchIcon fontSize='large' sx={{ color: '#eeeeee' }} />
                 </IconButton>
-                {!accessToken && (
+                {!user.access_token && (
                     <Tooltip
                         title={'Login'}
                         arrow
@@ -103,11 +128,28 @@ const NavBar = () => {
                         </IconButton>
                     </Tooltip>
                 )}
-                {accessToken && (
-                    <IconButton>
+                {user.access_token && (
+                    <IconButton
+                        onClick={handleClick}
+                    >
                         <Face5Icon fontSize='large' sx={{ color: '#eeeeee' }} />
                     </IconButton>
                 )}
+                <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    TransitionComponent={Fade}
+                >
+                    <Link style={{ textDecoration: 'none' }} to={'/profile'}>
+                        <MenuItem onClick={handleClose}>
+                            <Button sx={{ color: 'black' }}>Profile</Button>
+                        </MenuItem>
+                    </Link>
+                    <MenuItem onClick={handleClose}>
+                        <Button sx={{ color: 'black' }}>Logout</Button>
+                    </MenuItem>
+                </Menu>
             </Stack>
         </Stack>
     )
