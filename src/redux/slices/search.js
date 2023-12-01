@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    keyword:''
+    keyword:'',
+    trigger: false
 }
 
 export const searchSlice = createSlice({
@@ -11,9 +12,12 @@ export const searchSlice = createSlice({
     assignKeyword: (state, action) => {
         state.keyword = action.payload
     },
+    searchTrigger: (state) => {
+        state.trigger = !state.trigger
+    },
   },
 })
 
-export const { assignKeyword } = searchSlice.actions
+export const { assignKeyword, searchTrigger } = searchSlice.actions
 
 export default searchSlice.reducer
