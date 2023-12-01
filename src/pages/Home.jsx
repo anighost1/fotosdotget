@@ -23,7 +23,7 @@ export default function Home() {
     const [loader, setLoader] = useState(false);
     const dispatch = useDispatch()
     const accessToken = useSelector((state) => state.user?.access_token)
-    const searchKeyword = useSelector((state) => state.search.keyword)
+    const {keyword, trigger} = useSelector((state) => state.search)
 
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get('code')
@@ -64,7 +64,7 @@ export default function Home() {
 
     const searchImages = async () => {
         setLoader(true)
-        const data = await Service.searchPhotos(searchKeyword, accessToken);
+        const data = await Service.searchPhotos(keyword, accessToken);
         if (data) {
             setImages(data.results)
         }
@@ -81,12 +81,12 @@ export default function Home() {
     }
     
     useEffect(() => {
-        if (searchKeyword) {
+        if (keyword) {
             searchImages()
         }else{
             fetchImages()
         }
-    }, [searchKeyword])
+    }, [trigger])
 
     useEffect(() => {
         fetchImages()
