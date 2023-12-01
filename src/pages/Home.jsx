@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Grid,
-    Typography,
     Container,
-    LinearProgress ,
-    Button
 } from '@mui/material';
 import ImageCard from '../components/ImageCard';
 import ImageSkeleton from '../components/ImageSkeleton';

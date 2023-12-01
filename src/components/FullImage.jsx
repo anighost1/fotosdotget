@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Dialog,
     Button,
@@ -17,10 +17,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import ImageDownloader from './ImageDownloader';
 import Service from '../services/http';
-// import crypto from 'crypto';
+
 
 const FullImage = ({ open, handleClose, data }) => {
-
 
     const CustomButton = styled(Button)({
         color: '#222831',
@@ -30,29 +29,6 @@ const FullImage = ({ open, handleClose, data }) => {
             color: 'white',
         },
     });
-
-    const generateRandomString = () => {
-        const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-        const stringLength = 5;
-        let randomString = '';
-
-        for (let i = 0; i < stringLength; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            randomString += characters[randomIndex];
-        }
-        return randomString
-    };
-
-    const handleDownload = async () => {
-        const imageBlob = await Service.getBlob(data.urls?.raw)
-        const url = window.URL.createObjectURL(new Blob([imageBlob]));
-        ImageDownloader(url, `${generateRandomString()}.jpg`)
-    }
-
-    const handleShare = async () => {
-        const shareLink = `https://api.whatsapp.com/send?text=${encodeURIComponent( `Check out this awesome photo: ${data.urls?.raw}`)}`;
-        window.open(shareLink,'_blank')
-    }
 
 
     return (
@@ -68,7 +44,6 @@ const FullImage = ({ open, handleClose, data }) => {
                     top: 1,
                     right: 1,
                     zIndex: 10,
-                    // backgroundColor:'#22283155',
                     background: 'radial-gradient(circle, rgba(34,40,49,0.55) 0%, rgba(34,40,49,0) 70%)',
                     color: '#eeeeee'
                 }}
@@ -122,23 +97,23 @@ const FullImage = ({ open, handleClose, data }) => {
                         <CustomButton
                             variant='outlined'
                             fullWidth
-                            onClick={handleShare}
+                            onClick={() => { handleShare(data) }}
                         >
                             <ShareIcon />
                         </CustomButton>
                         <CustomButton
                             variant='outlined'
                             fullWidth
-                            onClick={handleDownload}
+                            onClick={() => { handleDownload(data) }}
                         >
                             <DownloadIcon />
                         </CustomButton>
-                        <CustomButton
+                        {/* <CustomButton
                             variant='outlined'
                             fullWidth
                         >
                             <FavoriteBorderIcon />
-                        </CustomButton>
+                        </CustomButton> */}
                     </Stack>
                 </Stack>
             </Stack>
@@ -147,3 +122,27 @@ const FullImage = ({ open, handleClose, data }) => {
 }
 
 export default FullImage
+
+
+const generateRandomString = () => {
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const stringLength = 5;
+    let randomString = '';
+
+    for (let i = 0; i < stringLength; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomString += characters[randomIndex];
+    }
+    return randomString
+};
+
+export const handleDownload = async (imgData) => {
+    const imageBlob = await Service.getBlob(imgData.urls?.raw)
+    const url = window.URL.createObjectURL(new Blob([imageBlob]));
+    ImageDownloader(url, `${generateRandomString()}.jpg`)
+}
+
+export const handleShare = async (imgData) => {
+    const shareLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(`Check out this awesome photo: ${imgData.urls?.raw}`)}`;
+    window.open(shareLink, '_blank')
+}

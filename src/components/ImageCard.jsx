@@ -1,17 +1,14 @@
 import React from 'react'
 import {
-    Button,
     Card,
-    CardActions,
-    CardContent,
     CardMedia,
-    Grid,
     Typography,
-    Container,
     IconButton,
     Stack,
     Box
 } from '@mui/material';
+import { useSelector } from 'react-redux';
+import Service from '../services/http';
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -19,8 +16,17 @@ import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import { handleDownload, handleShare } from './FullImage';
 
 const ImageCard = ({ data, handleClickOpen, selectImage }) => {
+
+    const accessToken = useSelector((state) => state.user?.access_token)
+
+    const handleLike = async () => {
+        const result = await Service.PhotoLike(accessToken, data)
+        console.log(result)
+    }
+
     return (
         <Card
             sx={{
@@ -43,7 +49,6 @@ const ImageCard = ({ data, handleClickOpen, selectImage }) => {
                         transform: "scale(1.008)"
                     },
                 }}
-                // image="https://source.unsplash.com/random?wallpapers"
                 image={data.urls.small_s3}
                 onClick={() => { handleClickOpen(); selectImage(data) }}
             />
@@ -66,20 +71,26 @@ const ImageCard = ({ data, handleClickOpen, selectImage }) => {
                 alignItems={'center'}
             >
                 <Box>
-                    <IconButton>
+                    <IconButton
+                        onClick={() => { handleShare(data) }}
+                    >
                         <ShareIcon fontSize='small' />
                     </IconButton>
-                    <IconButton>
+                    <IconButton
+                        onClick={() => { handleDownload(data) }}
+                    >
                         <DownloadIcon fontSize='small' />
                     </IconButton>
-                    <IconButton>
+                    {/* <IconButton>
                         <FavoriteBorderIcon fontSize='small' />
-                    </IconButton>
+                    </IconButton> */}
                 </Box>
                 <Stack direction={'row'} spacing={1} px={1} alignItems={'center'}>
-                    <IconButton>
-                        <ThumbUpOutlinedIcon fontSize='small' />
-                    </IconButton>
+                    {/* <IconButton
+                        onClick={handleLike}
+                    > */}
+                        {data.liked_by_user ? (<ThumbUpIcon fontSize='small' />) : (<ThumbUpOutlinedIcon fontSize='small' />)}
+                    {/* </IconButton> */}
                     <Typography>{data.likes}</Typography>
                 </Stack>
             </Stack>
