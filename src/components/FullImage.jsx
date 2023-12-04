@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     Dialog,
     Button,
@@ -8,8 +8,6 @@ import {
     IconButton,
 } from '@mui/material'
 
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import DownloadIcon from '@mui/icons-material/Download';
 import CloseIcon from '@mui/icons-material/Close';
@@ -108,12 +106,6 @@ const FullImage = ({ open, handleClose, data }) => {
                         >
                             <DownloadIcon />
                         </CustomButton>
-                        {/* <CustomButton
-                            variant='outlined'
-                            fullWidth
-                        >
-                            <FavoriteBorderIcon />
-                        </CustomButton> */}
                     </Stack>
                 </Stack>
             </Stack>

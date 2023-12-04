@@ -34,7 +34,6 @@ const Profile = () => {
             >
                 <Box
                     component={'img'}
-                    // src='https://images.unsplash.com/profile-fb-1698490923-66ff741728bf.jpg?ixlib=rb-4.0.3&crop=faces&fit=crop&w=128&h=128'
                     src={user.user.profile_image?.large}
                     sx={{
                         borderRadius: '50%',

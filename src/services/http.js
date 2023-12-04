@@ -8,7 +8,6 @@ const PhotoUrl = `${BaseUrl}/photos/`;
 
 
 const Authentication = () => {
-    // const redirect_uri = encodeURIComponent('http://localhost:3000/')
     const redirect_uri = encodeURIComponent(process.env.REACT_APP_HOME_URL)
     const scope = 'public+read_photos+write_photos+write_likes';
     const url = `https://unsplash.com/oauth/authorize?client_id=${AccessKey}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}`
@@ -24,7 +23,6 @@ const getAuthToken = async (code) => {
     const dataToSend = {
         client_id: AccessKey,
         client_secret: SecretKey,
-        // redirect_uri: 'http://localhost:3000/',
         redirect_uri: process.env.REACT_APP_HOME_URL,
         code: code,
         grant_type: 'authorization_code'

@@ -10,7 +10,6 @@ export default function AuthCheck() {
 
     const isLoggedIn = ()=>{
         if(!accessToken || !user){
-            // window.location.replace('/')
             navigate('/')
         }
     }
