@@ -9,7 +9,7 @@ const PhotoUrl = `${BaseUrl}/photos/`;
 
 const Authentication = () => {
     const redirect_uri = encodeURIComponent('http://localhost:3000/')
-    const scope = 'public';
+    const scope = 'public+read_photos+write_photos+write_likes';
     const url = `https://unsplash.com/oauth/authorize?client_id=${AccessKey}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}`
     const link = document.createElement('a');
     link.href = url;
@@ -51,7 +51,7 @@ const searchPhotos = async (keyword, accessToken) => {
     const header = {
         Authorization: `Bearer ${accessToken}`
     }
-    return axios.get(url, {
+    return axios.get(url,{
         headers: header
     })
         .then((res) => {
@@ -88,6 +88,38 @@ const getUserProfile = async (accessToken) => {
         })
 }
 
+const PhotoLike = async (accessToken, imgData) => {
+    const url = `${BaseUrl}/photos/${imgData.id}/like`;
+    const header = {
+        Authorization: `Bearer ${accessToken}`
+    }
+    return axios.post(url,{}, {
+        headers: header
+    })
+        .then((res) => {
+            return res.data
+        })
+        .catch((err) => {
+            throw err
+        })
+}
+
+const PhotoUnlike = async (accessToken) => {
+    const url = `${BaseUrl}/me`;
+    const header = {
+        Authorization: `Bearer ${accessToken}`
+    }
+    return axios.get(url, {
+        headers: header
+    })
+        .then((res) => {
+            return res.data
+        })
+        .catch((err) => {
+            throw err
+        })
+}
+
 
 
 
@@ -99,6 +131,8 @@ const Service = {
     searchPhotos,
     getBlob,
     getUserProfile,
+    PhotoLike,
+    PhotoUnlike,
 }
 
 export default Service

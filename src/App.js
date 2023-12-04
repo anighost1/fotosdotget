@@ -6,16 +6,18 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Callback from './components/Callback';
 import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
 
 
 function App() {
 
     const location = useLocation()
-    
+
     return (
         <>
             <NavBar />
             <Routes>
+                <Route path='*' element={<NotFound />} />
                 <Route path='/' element={<Home />} />
                 <Route path='/callback' element={<Callback />} />
                 <Route path='/profile' element={<Profile />} />

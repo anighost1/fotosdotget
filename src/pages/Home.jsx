@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Grid,
-    Typography,
     Container,
-    LinearProgress ,
-    Button
 } from '@mui/material';
 import ImageCard from '../components/ImageCard';
 import ImageSkeleton from '../components/ImageSkeleton';
@@ -52,7 +49,7 @@ export default function Home() {
             dispatch(addToken(localStorage.getItem('access_token')))
             fetchProfile(localStorage.getItem('access_token'))
         }
-    }, [])
+    }, [accessToken])
 
     const handleClickOpen = () => {
         setOpen(true);
