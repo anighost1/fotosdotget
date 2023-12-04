@@ -6,6 +6,7 @@ import {
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import AuthCheck from '../services/AuthCheck';
 
 const Profile = () => {
     const dispatch = useDispatch()
@@ -15,6 +16,7 @@ const Profile = () => {
             direction={'column'}
             alignItems={'center'}
         >
+            <AuthCheck/>
             <Stack
                 direction={'column'}
                 spacing={2}
@@ -32,7 +34,8 @@ const Profile = () => {
             >
                 <Box
                     component={'img'}
-                    src='https://images.unsplash.com/profile-fb-1698490923-66ff741728bf.jpg?ixlib=rb-4.0.3&crop=faces&fit=crop&w=128&h=128'
+                    // src='https://images.unsplash.com/profile-fb-1698490923-66ff741728bf.jpg?ixlib=rb-4.0.3&crop=faces&fit=crop&w=128&h=128'
+                    src={user.user.profile_image?.large}
                     sx={{
                         borderRadius: '50%',
                         maxWidth: '10em'

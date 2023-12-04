@@ -15,6 +15,7 @@ export const userSlice = createSlice({
     },
     removeToken: (state) => {
         state.access_token = ''
+        state.user = {}
     },
     addUser: (state, action) => {
         state.user = action.payload

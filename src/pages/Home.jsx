@@ -49,7 +49,7 @@ export default function Home() {
             dispatch(addToken(localStorage.getItem('access_token')))
             fetchProfile(localStorage.getItem('access_token'))
         }
-    }, [])
+    }, [accessToken])
 
     const handleClickOpen = () => {
         setOpen(true);
