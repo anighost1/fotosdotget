@@ -6,7 +6,6 @@ import {
 
 export default function NotFound() {
     return (
-        // <div>The page you are trying to find is not available</div>
         <Stack
             direction={'column'}
             alignItems={'center'}

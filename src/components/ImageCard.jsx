@@ -81,16 +81,9 @@ const ImageCard = ({ data, handleClickOpen, selectImage }) => {
                     >
                         <DownloadIcon fontSize='small' />
                     </IconButton>
-                    {/* <IconButton>
-                        <FavoriteBorderIcon fontSize='small' />
-                    </IconButton> */}
                 </Box>
                 <Stack direction={'row'} spacing={1} px={1} alignItems={'center'}>
-                    {/* <IconButton
-                        onClick={handleLike}
-                    > */}
                         {data.liked_by_user ? (<ThumbUpIcon fontSize='small' />) : (<ThumbUpOutlinedIcon fontSize='small' />)}
-                    {/* </IconButton> */}
                     <Typography>{data.likes}</Typography>
                 </Stack>
             </Stack>
