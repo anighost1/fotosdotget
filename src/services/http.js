@@ -1,8 +1,8 @@
 
 import axios from "axios"
 
-export const AccessKey = '3C_WwY6dy_qrngQ50lQvEWEq3ZZtsqhEO7r51c0bxdc'
-export const SecretKey = 'l1yyWi-TlHjrkH4VO-6KxNYk-_Xs-94lb5MHcYzsm_A'
+export const AccessKey = process.env.REACT_APP_ACCESS_KEY
+export const SecretKey = process.env.REACT_APP_SECRET_KEY
 export const BaseUrl = 'https://api.unsplash.com';
 const PhotoUrl = `${BaseUrl}/photos/`;
 
