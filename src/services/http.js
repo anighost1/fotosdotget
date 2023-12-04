@@ -1,14 +1,15 @@
 
 import axios from "axios"
 
-export const AccessKey = '3C_WwY6dy_qrngQ50lQvEWEq3ZZtsqhEO7r51c0bxdc'
-export const SecretKey = 'l1yyWi-TlHjrkH4VO-6KxNYk-_Xs-94lb5MHcYzsm_A'
+export const AccessKey = process.env.REACT_APP_ACCESS_KEY
+export const SecretKey = process.env.REACT_APP_SECRET_KEY
 export const BaseUrl = 'https://api.unsplash.com';
 const PhotoUrl = `${BaseUrl}/photos/`;
 
 
 const Authentication = () => {
-    const redirect_uri = encodeURIComponent('http://localhost:3000/')
+    // const redirect_uri = encodeURIComponent('http://localhost:3000/')
+    const redirect_uri = encodeURIComponent(process.env.REACT_APP_HOME_URL)
     const scope = 'public+read_photos+write_photos+write_likes';
     const url = `https://unsplash.com/oauth/authorize?client_id=${AccessKey}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}`
     const link = document.createElement('a');
@@ -23,7 +24,8 @@ const getAuthToken = async (code) => {
     const dataToSend = {
         client_id: AccessKey,
         client_secret: SecretKey,
-        redirect_uri: 'http://localhost:3000/',
+        // redirect_uri: 'http://localhost:3000/',
+        redirect_uri: process.env.REACT_APP_HOME_URL,
         code: code,
         grant_type: 'authorization_code'
     }
